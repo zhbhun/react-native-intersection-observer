@@ -62,21 +62,22 @@ class IntersectionObserver {
       horizontal,
       current: {
         contentOffset, // 偏移量
+        contentSize,
         layoutMeasurement, // 布局大小
       },
     } = this.options.root;
-    if (layoutMeasurement.width <= 0 || layoutMeasurement.height <= 0) {
+    if (
+      contentSize.width <= 0 ||
+      contentSize.height <= 0 ||
+      layoutMeasurement.width <= 0 ||
+      layoutMeasurement.height <= 0
+    ) {
       return;
     }
     const contentOffsetWithLayout = horizontal
       ? contentOffset.x + layoutMeasurement.width
       : contentOffset.y + layoutMeasurement.height;
     const changedTargets: IntersectionObserverEntry[] = [];
-    // console.warn(
-    //   this.options.root.current,
-    //   '---',
-    //   this.targets && this.targets[0] && this.targets[0].layout,
-    // );
     for (let index = 0; index < this.targets.length; index += 1) {
       const target = this.targets[index];
       const targetLayout: LayoutRectangle = target.layout;
