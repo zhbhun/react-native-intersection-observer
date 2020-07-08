@@ -49,9 +49,13 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
 
   context: undefined | IOCOntextValue;
 
+  mounted = false;
+
   protected element: Element;
 
   protected instance: undefined | ObserverInstance;
+
+  protected view: any;
 
   constructor(props: InViewProps<T>) {
     super(props);
@@ -64,10 +68,12 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
         width: 0,
         height: 0,
       },
+      measureLayout: this.measureLayout,
     };
   }
 
   componentDidMount() {
+    this.mounted = true;
     if (this.context?.manager) {
       this.instance = this.context.manager.observe(
         this.element,
@@ -77,32 +83,48 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     if (this.context?.manager && this.instance) {
       this.context.manager.unobserve(this.element);
     }
   }
 
-  handleChange = (inView: boolean) => {
-    const { triggerOnce, onChange } = this.props;
-    if (inView && triggerOnce) {
-      if (this.context?.manager) {
-        this.context?.manager.unobserve(this.element);
+  protected handleChange = (inView: boolean) => {
+    if (this.mounted) {
+      const { triggerOnce, onChange } = this.props;
+      if (inView && triggerOnce) {
+        if (this.context?.manager) {
+          this.context?.manager.unobserve(this.element);
+        }
       }
-    }
-    if (onChange) {
-      onChange(inView);
+      if (onChange) {
+        onChange(inView);
+      }
     }
   };
 
-  handleLayout = (event: LayoutChangeEvent) => {
-    this.element.layout = event.nativeEvent.layout;
-    if (this.element.onLayout) {
-      this.element.onLayout(this.element.layout);
-    }
-    const { onLayout } = this.props;
-    if (onLayout) {
-      onLayout(event);
-    }
+  protected handleRef = (ref: any) => {
+    this.view = ref;
+  };
+
+  measureInWindow = (...args: any) => {
+    this.view.measureInWindow(...args);
+  };
+
+  measureLayout = (...args: any) => {
+    this.view.measureLayout(...args);
+  };
+
+  setNativeProps = (...args: any) => {
+    this.view.setNativeProps(...args);
+  };
+
+  focus = (...args: any) => {
+    this.view.focus(...args);
+  };
+
+  blur = (...args: any) => {
+    this.view.blur(...args);
   };
 
   render() {
@@ -112,7 +134,7 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     }
     const ViewComponent: InViewWrapper = (as || View) as InViewWrapper;
     return (
-      <ViewComponent {...props} onLayout={this.handleLayout}>
+      <ViewComponent {...props} ref={this.handleRef}>
         {children}
       </ViewComponent>
     );

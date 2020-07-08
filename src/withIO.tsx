@@ -6,6 +6,7 @@ import {
   ScrollView,
   ScrollViewComponent,
   ScrollViewProps,
+  findNodeHandle,
 } from 'react-native';
 
 import IOContext, { IOCOntextValue } from './IOContext';
@@ -32,6 +33,8 @@ const withIO = (
   ScrollableComponent: typeof ScrollViewComponent,
 ): typeof IOScrollView => {
   class IOScrollableComponent extends PureComponent<IOScrollViewProps> {
+    protected node: any;
+
     protected scroller: RefObject<ScrollView>;
 
     protected root: Root;
@@ -46,6 +49,9 @@ const withIO = (
       const self = this;
       this.scroller = createRef();
       this.root = {
+        get node() {
+          return self.node;
+        },
         get horizontal() {
           return !!self.props.horizontal;
         },
@@ -83,20 +89,18 @@ const withIO = (
       };
     }
 
-    protected updateRoot = (event: Partial<NativeScrollEvent>) => {
-      this.root.current = {
-        ...this.root.current,
-        ...event,
-      };
-      if (this.root.onScroll) {
-        this.root.onScroll(this.root.current);
-      }
-    };
+    componentDidMount() {
+      this.node = findNodeHandle(this.scroller.current);
+    }
 
     protected handleContentSizeChange = (width: number, height: number) => {
-      this.updateRoot({
-        contentSize: { width, height },
-      });
+      const { contentSize } = this.root.current;
+      if (width !== contentSize.width || height !== contentSize.height) {
+        this.root.current.contentSize = { width, height };
+        if (width > 0 && height > 0 && this.root.onLayout) {
+          this.root.onLayout();
+        }
+      }
       const { onContentSizeChange } = this.props;
       if (onContentSizeChange) {
         onContentSizeChange(width, height);
@@ -104,9 +108,16 @@ const withIO = (
     };
 
     protected handleLayout = (event: LayoutChangeEvent) => {
-      this.updateRoot({
-        layoutMeasurement: event.nativeEvent.layout,
-      });
+      const {
+        nativeEvent: { layout },
+      } = event;
+      const { layoutMeasurement } = this.root.current;
+      if (
+        layoutMeasurement.width !== layout.width ||
+        layoutMeasurement.height !== layout.height
+      ) {
+        this.root.current.layoutMeasurement = layout;
+      }
       const { onLayout } = this.props;
       if (onLayout) {
         onLayout(event);
@@ -116,7 +127,10 @@ const withIO = (
     protected handleScroll = (
       event: NativeSyntheticEvent<NativeScrollEvent>,
     ) => {
-      this.updateRoot(event.nativeEvent);
+      this.root.current = event.nativeEvent;
+      if (this.root.onScroll) {
+        this.root.onScroll(this.root.current);
+      }
       const { onScroll } = this.props;
       if (onScroll) {
         onScroll(event);
