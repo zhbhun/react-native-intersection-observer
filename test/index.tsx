@@ -5,7 +5,7 @@ import { InView, IOScrollView } from '../src';
 
 const styles = StyleSheet.create({
   demo: {
-    marginTop: 505,
+    marginTop: 800,
     marginBottom: 1000,
     height: 100,
     backgroundColor: '#f00',
