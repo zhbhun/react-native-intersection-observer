@@ -25,6 +25,10 @@ export interface Element {
     node: any,
     callback: (x: number, y: number, width: number, height: number) => void,
   ) => void;
+  /**
+   * 布局回调（内容高度变化等）
+   */
+  onLayout?: () => void;
 }
 
 export interface IntersectionObserverEntry {
@@ -160,8 +164,8 @@ class IntersectionObserver {
   public observe(target: Element) {
     const index = this.targets.indexOf(target);
     if (index < 0) {
+      target.onLayout = () => this.handleLayout;
       this.targets.push(target);
-      this.measureTarget(target);
     }
   }
 

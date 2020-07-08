@@ -107,6 +107,29 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     this.view = ref;
   };
 
+  protected handleLayout = (event: LayoutChangeEvent) => {
+    const {
+      nativeEvent: { layout },
+    } = event;
+    if (
+      layout.width !== this.element.layout.width ||
+      layout.height !== this.element.layout.height
+    ) {
+      this.element.layout = {
+        ...this.element.layout,
+        width: layout.width,
+        height: layout.height,
+      };
+      if (this.element.onLayout) {
+        this.element.onLayout();
+      }
+    }
+    const { onLayout } = this.props;
+    if (onLayout) {
+      onLayout(event);
+    }
+  };
+
   measureInWindow = (...args: any) => {
     this.view.measureInWindow(...args);
   };
@@ -134,7 +157,10 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     }
     const ViewComponent: InViewWrapper = (as || View) as InViewWrapper;
     return (
-      <ViewComponent {...props} ref={this.handleRef}>
+      <ViewComponent
+        {...props}
+        ref={this.handleRef}
+        onLayout={this.handleLayout}>
         {children}
       </ViewComponent>
     );
