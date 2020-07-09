@@ -98,7 +98,7 @@ class IntersectionObserver {
     },
     300,
     { leading: false, trailing: true },
-  );
+  ); // TODO: 优化节流
 
   protected handleScroll = throttle(
     () => {
@@ -164,7 +164,7 @@ class IntersectionObserver {
   public observe(target: Element) {
     const index = this.targets.indexOf(target);
     if (index < 0) {
-      target.onLayout = () => this.handleLayout;
+      target.onLayout = this.handleLayout;
       this.targets.push(target);
     }
   }
@@ -172,6 +172,7 @@ class IntersectionObserver {
   public unobserve(target: Element) {
     const index = this.targets.indexOf(target);
     if (index >= 0) {
+      target.onLayout = undefined;
       this.targets.splice(index, 1);
     }
   }

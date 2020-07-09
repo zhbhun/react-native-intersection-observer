@@ -115,11 +115,6 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
       layout.width !== this.element.layout.width ||
       layout.height !== this.element.layout.height
     ) {
-      this.element.layout = {
-        ...this.element.layout,
-        width: layout.width,
-        height: layout.height,
-      };
       if (this.element.onLayout) {
         this.element.onLayout();
       }
