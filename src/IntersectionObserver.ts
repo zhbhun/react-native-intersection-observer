@@ -131,7 +131,7 @@ class IntersectionObserver {
           targetLayout.width === 0 ||
           targetLayout.height === 0
         ) {
-          break;
+          continue;
         }
         let isIntersecting = false;
         if (horizontal) {
