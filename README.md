@@ -23,7 +23,7 @@ npm install react-native-intersection-observer --save
 You can pass any component to the `<InView />`, and it will handle creating the
 wrapping View component. Add a handler to the `onChange` method, and control the
 state in your own component. Any extra props you add to `<InView>` will be
-passed to the View component, allowing you set the `style`, etc.
+passed to the View component, allowing you to set the `style`, etc.
 
 ```jsx
 import { IOScrollView, InView } from 'react-native-intersection-observer'
@@ -45,7 +45,7 @@ export default Component
 
 | Name | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| rootMargin | { top: number; left: number; right: number; bottom: number } | undefiend | false | roo margin |
+| rootMargin | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
 
 ### InView Props
 
