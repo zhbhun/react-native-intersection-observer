@@ -17,9 +17,7 @@ interface IOScrollViewProps extends ScrollViewProps {
   rootMargin?: RootMargin;
 }
 
-export declare class IOScrollViewComponent extends PureComponent<
-  IOScrollViewProps
-> {}
+export declare class IOScrollViewComponent extends PureComponent<IOScrollViewProps> {}
 
 export declare class IOScrollView extends IOScrollViewComponent {
   scrollTo: ScrollView['scrollTo'];
@@ -30,7 +28,7 @@ export declare class IOScrollView extends IOScrollViewComponent {
 }
 
 const withIO = (
-  ScrollableComponent: typeof ScrollViewComponent,
+  ScrollableComponent: typeof ScrollViewComponent
 ): typeof IOScrollView => {
   class IOScrollableComponent extends PureComponent<IOScrollViewProps> {
     protected node: any;
@@ -125,7 +123,7 @@ const withIO = (
     };
 
     protected handleScroll = (
-      event: NativeSyntheticEvent<NativeScrollEvent>,
+      event: NativeSyntheticEvent<NativeScrollEvent>
     ) => {
       this.root.current = event.nativeEvent;
       if (this.root.onScroll) {
@@ -140,7 +138,7 @@ const withIO = (
     public scrollTo(
       y?: number | { x?: number; y?: number; animated?: boolean },
       x?: number,
-      animated?: boolean,
+      animated?: boolean
     ) {
       this.scroller.current?.scrollTo(y, x, animated);
     }
@@ -150,7 +148,7 @@ const withIO = (
     };
 
     public getScrollResponder = (): JSX.Element => {
-      return this.scroller.current?.getScrollResponder() as JSX.Element;
+      return this.scroller.current?.getScrollResponder() as unknown as JSX.Element;
     };
 
     public getScrollableNode = (): any => {
@@ -176,7 +174,7 @@ const withIO = (
       );
     }
   }
-  return IOScrollableComponent;
+  return IOScrollableComponent as any;
 };
 
 export default withIO;

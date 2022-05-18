@@ -23,7 +23,8 @@ const App = () => {
           triggerOnce={false}
           onChange={(inView) => {
             console.warn(inView);
-          }}>
+          }}
+        >
           <Text>Hello World!</Text>
         </InView>
       </View>
@@ -31,4 +32,4 @@ const App = () => {
   );
 };
 
-AppRegistry.registerComponent('debug', () => App);
+AppRegistry.registerComponent('ReactNativeIntersectionObserver', () => App);
