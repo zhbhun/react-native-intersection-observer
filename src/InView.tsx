@@ -47,7 +47,7 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     as: View,
   };
 
-  context: undefined | IOCOntextValue;
+  context: undefined | IOCOntextValue = undefined;
 
   mounted = false;
 
