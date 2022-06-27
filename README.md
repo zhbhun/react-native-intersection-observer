@@ -57,3 +57,6 @@ The **`<InView />`** component also accepts the following props:
 | **children** | `ReactNode` | | true | Children expects a plain child, to have the `<InView />` deal with the wrapping element. |
 | **triggerOnce** | boolean | false | false | Only trigger this method once |
 | **onChange** | `(inView: boolean) => void` | | false | Call this function whenever the in view state changes. It will receive the `inView` boolean, alongside the current `IntersectionObserverEntry`. |
+
+## License
+`react-native-intersection-observer` is [MIT licensed](./LICENSE).

@@ -13,6 +13,7 @@
   "repository": "zhbhun/react-native-intersection-observer",
   "main": "./lib/index.js",
   "files": [
+    "LICENSE",
     "lib"
   ],
   "scripts": {
