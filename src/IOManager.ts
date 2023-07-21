@@ -36,7 +36,7 @@ class IOManager {
 
   observe(
     element: Element,
-    callback: ObserverInstanceCallback,
+    callback: ObserverInstanceCallback
   ): ObserverInstance {
     const existInstance = this.instanceMap.get(element);
     if (existInstance) {

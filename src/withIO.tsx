@@ -3,6 +3,7 @@ import {
   LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  ScrollResponderMixin,
   ScrollView,
   ScrollViewComponent,
   ScrollViewProps,
@@ -13,24 +14,22 @@ import IOContext, { IOCOntextValue } from './IOContext';
 import { Root, RootMargin } from './IntersectionObserver';
 import IOManager from './IOManager';
 
-interface IOScrollViewProps extends ScrollViewProps {
+export interface IOScrollableComponentProps extends ScrollViewProps {
   rootMargin?: RootMargin;
 }
 
-export declare class IOScrollViewComponent extends PureComponent<IOScrollViewProps> {}
-
-export declare class IOScrollView extends IOScrollViewComponent {
+export declare class IOScrollableComponent extends PureComponent<IOScrollableComponentProps> {
   scrollTo: ScrollView['scrollTo'];
   scrollToEnd: ScrollView['scrollToEnd'];
-  getScrollResponder: ScrollView['getScrollResponder'];
+  getScrollResponder(): ScrollResponderMixin | undefined;
   getScrollableNode: ScrollView['getScrollableNode'];
   getInnerViewNode: ScrollView['getInnerViewNode'];
 }
 
 const withIO = (
   ScrollableComponent: typeof ScrollViewComponent
-): typeof IOScrollView => {
-  class IOScrollableComponent extends PureComponent<IOScrollViewProps> {
+): typeof IOScrollableComponent => {
+  class IOScrollView extends PureComponent<IOScrollableComponentProps> {
     protected node: any;
 
     protected scroller: RefObject<ScrollView>;
@@ -41,7 +40,7 @@ const withIO = (
 
     protected contextValue: IOCOntextValue;
 
-    constructor(props: IOScrollViewProps) {
+    constructor(props: IOScrollableComponentProps) {
       super(props);
 
       const self = this;
@@ -147,8 +146,8 @@ const withIO = (
       this.scroller.current?.scrollToEnd(options);
     };
 
-    public getScrollResponder = (): JSX.Element => {
-      return this.scroller.current?.getScrollResponder() as unknown as JSX.Element;
+    public getScrollResponder = (): ScrollResponderMixin | undefined => {
+      return this.scroller.current?.getScrollResponder();
     };
 
     public getScrollableNode = (): any => {
@@ -174,7 +173,7 @@ const withIO = (
       );
     }
   }
-  return IOScrollableComponent as any;
+  return IOScrollView;
 };
 
 export default withIO;

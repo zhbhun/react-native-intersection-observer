@@ -23,7 +23,7 @@ export interface Element {
    */
   measureLayout: (
     node: any,
-    callback: (x: number, y: number, width: number, height: number) => void,
+    callback: (x: number, y: number, width: number, height: number) => void
   ) => void;
   /**
    * 布局回调（内容高度变化等）
@@ -49,7 +49,7 @@ export interface IntersectionObserverOptions {
 }
 
 export type IntersectionObserverCallback = (
-  entries: IntersectionObserverEntry[],
+  entries: IntersectionObserverEntry[]
 ) => void;
 
 export const defaultRootMargin: RootMargin = {
@@ -66,7 +66,7 @@ class IntersectionObserver {
 
   constructor(
     callback: IntersectionObserverCallback,
-    options: IntersectionObserverOptions,
+    options: IntersectionObserverOptions
   ) {
     this.callback = callback;
     this.options = options;
@@ -97,7 +97,7 @@ class IntersectionObserver {
       }
     },
     300,
-    { leading: false, trailing: true },
+    { leading: false, trailing: true }
   ); // TODO: 优化节流
 
   protected handleScroll = throttle(
@@ -158,7 +158,7 @@ class IntersectionObserver {
       this.callback(changedTargets);
     },
     100,
-    { leading: false, trailing: true },
+    { leading: false, trailing: true }
   ); // TODO: 优化节流
 
   public observe(target: Element) {

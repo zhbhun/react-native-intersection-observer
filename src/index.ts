@@ -1,7 +1,20 @@
-import IntersectionObserver from './IntersectionObserver';
-import InView from './InView';
+import IntersectionObserver, {
+  type IntersectionObserverEntry,
+  type IntersectionObserverOptions,
+  type RootMargin,
+} from './IntersectionObserver';
+import InView, { type InViewProps } from './InView';
 import IOContext from './IOContext';
-import IOScrollView from './IOScrollView';
-import withIO from './withIO';
+import IOScrollView, { type IOScrollViewProps } from './IOScrollView';
+import withIO, { type IOScrollableComponentProps } from './withIO';
+
+export type {
+  IntersectionObserverEntry,
+  IntersectionObserverOptions,
+  RootMargin,
+  InViewProps,
+  IOScrollViewProps,
+  IOScrollableComponentProps,
+};
 
 export { IntersectionObserver, InView, IOContext, IOScrollView, withIO };

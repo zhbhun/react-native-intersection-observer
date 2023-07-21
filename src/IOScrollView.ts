@@ -1,5 +1,12 @@
 import { ScrollView } from 'react-native';
 
-import withIntersectionObserver, { IOScrollView } from './withIO';
+import withIntersectionObserver, {
+  type IOScrollableComponent,
+  type IOScrollableComponentProps,
+} from './withIO';
 
-export default withIntersectionObserver(ScrollView) as typeof IOScrollView;
+export type IOScrollViewProps = IOScrollableComponentProps;
+
+export default withIntersectionObserver(
+  ScrollView
+) as typeof IOScrollableComponent;

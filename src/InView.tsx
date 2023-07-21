@@ -77,7 +77,7 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     if (this.context?.manager) {
       this.instance = this.context.manager.observe(
         this.element,
-        this.handleChange,
+        this.handleChange
       );
     }
   }
@@ -155,7 +155,8 @@ class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
       <ViewComponent
         {...props}
         ref={this.handleRef}
-        onLayout={this.handleLayout}>
+        onLayout={this.handleLayout}
+      >
         {children}
       </ViewComponent>
     );
