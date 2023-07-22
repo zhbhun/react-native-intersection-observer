@@ -1,15 +1,8 @@
-import { PureComponent } from 'react';
-import { ScrollResponderMixin, ScrollView, ScrollViewComponent, ScrollViewProps } from 'react-native';
+import { type ComponentProps } from 'react';
+import { ScrollView } from 'react-native';
 import { RootMargin } from './IntersectionObserver';
-export interface IOScrollableComponentProps extends ScrollViewProps {
+export interface IOComponentProps {
     rootMargin?: RootMargin;
 }
-export declare class IOScrollableComponent extends PureComponent<IOScrollableComponentProps> {
-    scrollTo: ScrollView['scrollTo'];
-    scrollToEnd: ScrollView['scrollToEnd'];
-    getScrollResponder(): ScrollResponderMixin | undefined;
-    getScrollableNode: ScrollView['getScrollableNode'];
-    getInnerViewNode: ScrollView['getInnerViewNode'];
-}
-declare const withIO: (ScrollableComponent: typeof ScrollViewComponent) => typeof IOScrollableComponent;
+declare function withIO<CompProps extends Pick<ComponentProps<typeof ScrollView>, 'horizontal' | 'scrollEventThrottle' | 'onContentSizeChange' | 'onLayout' | 'onScroll'>>(Comp: new (props: CompProps) => any, methods: string[]): new (props: CompProps) => any;
 export default withIO;

@@ -5,16 +5,33 @@ import IntersectionObserver, {
 } from './IntersectionObserver';
 import InView, { type InViewProps } from './InView';
 import IOContext from './IOContext';
-import IOScrollView, { type IOScrollViewProps } from './IOScrollView';
-import withIO, { type IOScrollableComponentProps } from './withIO';
+import IOFlatList, {
+  type IOFlatListController,
+  type IOFlatListProps,
+} from './IOFlatList';
+import IOScrollView, {
+  type IOScrollViewController,
+  type IOScrollViewProps,
+} from './IOScrollView';
+import withIO, { type IOComponentProps } from './withIO';
 
 export type {
   IntersectionObserverEntry,
   IntersectionObserverOptions,
   RootMargin,
   InViewProps,
+  IOComponentProps,
+  IOFlatListController,
+  IOFlatListProps,
+  IOScrollViewController,
   IOScrollViewProps,
-  IOScrollableComponentProps,
 };
 
-export { IntersectionObserver, InView, IOContext, IOScrollView, withIO };
+export {
+  IntersectionObserver,
+  InView,
+  IOContext,
+  IOFlatList,
+  IOScrollView,
+  withIO,
+};

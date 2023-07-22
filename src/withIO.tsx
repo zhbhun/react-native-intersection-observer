@@ -1,12 +1,14 @@
-import React, { PureComponent, RefObject, createRef } from 'react';
+import React, {
+  type ComponentProps,
+  PureComponent,
+  RefObject,
+  createRef,
+} from 'react';
 import {
   LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  ScrollResponderMixin,
   ScrollView,
-  ScrollViewComponent,
-  ScrollViewProps,
   findNodeHandle,
 } from 'react-native';
 
@@ -14,25 +16,25 @@ import IOContext, { IOCOntextValue } from './IOContext';
 import { Root, RootMargin } from './IntersectionObserver';
 import IOManager from './IOManager';
 
-export interface IOScrollableComponentProps extends ScrollViewProps {
+export interface IOComponentProps {
   rootMargin?: RootMargin;
 }
 
-export declare class IOScrollableComponent extends PureComponent<IOScrollableComponentProps> {
-  scrollTo: ScrollView['scrollTo'];
-  scrollToEnd: ScrollView['scrollToEnd'];
-  getScrollResponder(): ScrollResponderMixin | undefined;
-  getScrollableNode: ScrollView['getScrollableNode'];
-  getInnerViewNode: ScrollView['getInnerViewNode'];
-}
-
-const withIO = (
-  ScrollableComponent: typeof ScrollViewComponent
-): typeof IOScrollableComponent => {
-  class IOScrollView extends PureComponent<IOScrollableComponentProps> {
+function withIO<
+  CompProps extends Pick<
+    ComponentProps<typeof ScrollView>,
+    | 'horizontal'
+    | 'scrollEventThrottle'
+    | 'onContentSizeChange'
+    | 'onLayout'
+    | 'onScroll'
+  >
+>(Comp: new (props: CompProps) => any, methods: string[]) {
+  type ScrollableComponentProps = CompProps & IOComponentProps;
+  const IOScrollableComponent = class extends PureComponent<ScrollableComponentProps> {
     protected node: any;
 
-    protected scroller: RefObject<ScrollView>;
+    protected scroller: RefObject<any>;
 
     protected root: Root;
 
@@ -40,7 +42,7 @@ const withIO = (
 
     protected contextValue: IOCOntextValue;
 
-    constructor(props: IOScrollableComponentProps) {
+    constructor(props: ScrollableComponentProps) {
       super(props);
 
       const self = this;
@@ -88,6 +90,11 @@ const withIO = (
 
     componentDidMount() {
       this.node = findNodeHandle(this.scroller.current);
+      methods.forEach((method) => {
+        (this as any)[method] = (...args: any) => {
+          this.scroller.current?.[method]?.(...args);
+        };
+      });
     }
 
     protected handleContentSizeChange = (width: number, height: number) => {
@@ -134,34 +141,10 @@ const withIO = (
       }
     };
 
-    public scrollTo(
-      y?: number | { x?: number; y?: number; animated?: boolean },
-      x?: number,
-      animated?: boolean
-    ) {
-      this.scroller.current?.scrollTo(y, x, animated);
-    }
-
-    public scrollToEnd = (options?: { animated: boolean }): void => {
-      this.scroller.current?.scrollToEnd(options);
-    };
-
-    public getScrollResponder = (): ScrollResponderMixin | undefined => {
-      return this.scroller.current?.getScrollResponder();
-    };
-
-    public getScrollableNode = (): any => {
-      return this.scroller.current?.getScrollableNode();
-    };
-
-    public getInnerViewNode = (): any => {
-      return this.scroller.current?.getInnerViewNode();
-    };
-
     render() {
       return (
         <IOContext.Provider value={this.contextValue}>
-          <ScrollableComponent
+          <Comp
             scrollEventThrottle={16}
             {...this.props}
             ref={this.scroller}
@@ -172,8 +155,9 @@ const withIO = (
         </IOContext.Provider>
       );
     }
-  }
-  return IOScrollView;
-};
+  };
+
+  return IOScrollableComponent as typeof Comp;
+}
 
 export default withIO;

@@ -26,7 +26,7 @@ export interface IntersectionObserverOptions {
     root: Root;
     rootMargin?: RootMargin;
 }
-export declare type IntersectionObserverCallback = (entries: IntersectionObserverEntry[]) => void;
+export type IntersectionObserverCallback = (entries: IntersectionObserverEntry[]) => void;
 export declare const defaultRootMargin: RootMargin;
 declare class IntersectionObserver {
     protected callback: IntersectionObserverCallback;

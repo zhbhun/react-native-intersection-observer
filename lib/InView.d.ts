@@ -10,14 +10,14 @@ export interface RenderProps {
 export interface Props {
     [key: string]: any;
 }
-export declare type InViewProps<T extends Props = Props> = T & {
+export type InViewProps<T = Props> = T & {
     as?: ComponentType<any>;
     children: ReactNode | ((fields: RenderProps) => ReactElement<View>);
     triggerOnce?: boolean;
     onChange?: (inView: boolean) => void;
     onLayout?: (event: LayoutChangeEvent) => void;
 };
-export declare type InViewWrapper = ComponentType<{
+export type InViewWrapper = ComponentType<{
     ref?: RefObject<any> | ((ref: any) => void);
     onLayout?: (event: LayoutChangeEvent) => void;
 }>;

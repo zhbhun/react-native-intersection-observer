@@ -20,7 +20,7 @@ export interface Props {
   [key: string]: any;
 }
 
-export type InViewProps<T extends Props = Props> = T & {
+export type InViewProps<T = Props> = T & {
   /**
    * Render the wrapping element as this element.
    * @default `'View'`

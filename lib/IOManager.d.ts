@@ -1,6 +1,6 @@
 import { Element } from './IntersectionObserver';
 import IntersectionObserver, { IntersectionObserverOptions, IntersectionObserverEntry } from './IntersectionObserver';
-export declare type ObserverInstanceCallback = (inView: boolean) => void;
+export type ObserverInstanceCallback = (inView: boolean) => void;
 export interface ObserverInstance {
     readonly callback: ObserverInstanceCallback;
     readonly element: Element;

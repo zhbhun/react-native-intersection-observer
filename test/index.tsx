@@ -1,35 +1,77 @@
-import React from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  AppRegistry,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import ScrollViewTester from './ScrollViewTester';
+import FlatListTester from './FlatListTester';
 
-import { InView, IOScrollView } from '../src';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginTop: 800,
-    marginBottom: 1000,
+const demos = [
+  {
+    key: 'scrollview',
+    title: 'ScrollView',
+    content: <ScrollViewTester />,
   },
-  demo: {
-    height: 100,
-    backgroundColor: '#f00',
+  {
+    key: 'flatlist',
+    title: 'FlatList',
+    content: <FlatListTester />,
   },
-});
+];
 
 const App = () => {
+  const [active, setActive] = useState(demos[0]);
   return (
-    <IOScrollView rootMargin={{ top: 0, bottom: 0 }}>
-      <View style={styles.wrapper}>
-        <InView
-          style={styles.demo}
-          triggerOnce={false}
-          onChange={(inView) => {
-            console.warn(inView);
-          }}
-        >
-          <Text>Hello World!</Text>
-        </InView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        {demos.map((demo) => {
+          return (
+            <TouchableOpacity key={demo.key} onPress={() => setActive(demo)}>
+              <View style={styles.tab}>
+                <Text
+                  style={[
+                    styles.tab__title,
+                    demo === active && styles.tab__title_active,
+                  ]}
+                >
+                  {demo.title}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
-    </IOScrollView>
+      <View style={styles.content}>{active.content}</View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  tab: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  tab__title: {
+    fontSize: 16,
+  },
+  tab__title_active: {
+    fontWeight: '600',
+  },
+  content: {
+    flex: 1,
+  },
+});
 
 AppRegistry.registerComponent('ReactNativeIntersectionObserver', () => App);
