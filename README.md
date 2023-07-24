@@ -25,18 +25,36 @@ wrapping View component. Add a handler to the `onChange` method, and control the
 state in your own component. Any extra props you add to `<InView>` will be
 passed to the View component, allowing you to set the `style`, etc.
 
-```jsx
-import { IOScrollView, InView } from 'react-native-intersection-observer'
+```tsx
+import React, { useRef } from 'react';
+import { Text } from 'react-native';
+import {
+  IOScrollView,
+  IOScrollViewController,
+  InView,
+} from 'react-native-intersection-observer';
 
-const Component = () => (
-  <IOScrollView>
-    <InView onChange={(inView: boolean) => console.log('Inview:', inView)}>
-      <Text>Plain children are always rendered. Use onChange to monitor state.</Text>
-    </InView>
-  </IOScrollView>  
-)
+function Demo() {
+  const scrollViewRef = useRef<IOScrollViewController>(null);
+  return (
+    <IOScrollView ref={scrollViewRef}>
+      <Text
+        onPress={() => {
+          scrollViewRef.current?.scrollToEnd();
+        }}
+      >
+        Scroll to bottom
+      </Text>
+      <InView onChange={(inView: boolean) => console.log('Inview:', inView)}>
+        <Text>
+          Plain children are always rendered. Use onChange to monitor state.
+        </Text>
+      </InView>
+    </IOScrollView>
+  );
+}
 
-export default Component
+export default Demo;
 ```
 
 ## API
@@ -45,7 +63,13 @@ export default Component
 
 | Name | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| rootMargin | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+| [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+
+### IOFlatList Props
+
+| Name | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
 
 ### InView Props
 
