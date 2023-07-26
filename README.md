@@ -59,17 +59,25 @@ export default Demo;
 
 ## API
 
-### IOScrollView Props
+### IOScrollView
 
-| Name | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+- Props: Inherits [ScrollView Props](https://reactnative.dev/docs/scrollview#props)
+
+  | Name | Type | Default | Required | Description |
+  | --- | --- | --- | --- | --- |
+  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+
+- Methods: Inherits [ScrollView Methods](https://reactnative.dev/docs/scrollview#methods)
 
 ### IOFlatList Props
 
-| Name | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+- Props: Inherits [FlatList Props](https://reactnative.dev/docs/flatlist#props)
+
+  | Name | Type | Default | Required | Description |
+  | --- | --- | --- | --- | --- |
+  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+
+- Methods: Inherits [FlatList Methods](https://reactnative.dev/docs/flatlist#methods)
 
 ### InView Props
 
