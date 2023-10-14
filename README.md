@@ -57,6 +57,33 @@ function Demo() {
 export default Demo;
 ```
 
+Please note that the functionality of the InView component is dependent on the use of the withIO higher-order component to wrap your scrollable component. The react-native-intersection-observer library presently offers two frequently used scrollable components: IOScrollView and IOFlatList. It's imperative to utilize the InView component within one of these two components for it to work as intended. If neither IOScrollView nor IOFlatList suits your requirements, you have the flexibility to employ withIO to encapsulate your custom scrollable components.
+
+```tsx
+// IOScrollView definition
+import { ForwardRefExoticComponent, RefAttributes } from 'react';
+import { ScrollView, ScrollViewProps } from 'react-native';
+import { type IOComponentProps, withIO } from 'react-native-intersection-observer';
+
+export type IOScrollViewController = ScrollView;
+
+export type IOScrollViewProps = IOComponentProps & ScrollViewProps;
+
+const IOScrollView = withIO(ScrollView, [
+  'scrollTo',
+  'scrollToEnd',
+  'getScrollResponder',
+  'getScrollableNode',
+  'getInnerViewNode',
+]);
+
+export default IOScrollView as unknown as ForwardRefExoticComponent<
+  IOScrollViewProps & RefAttributes<IOScrollViewController>
+>;
+```
+
+Furthermore, InView cannot be used within nested scrollable components. It solely monitors the immediate parent's scroll behavior, and scrolling at higher ancestral levels does not trigger InView's visibility callback.
+
 ## API
 
 ### IOScrollView
