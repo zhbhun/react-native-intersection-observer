@@ -9,8 +9,6 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
-  View,
-  findNodeHandle,
 } from 'react-native';
 
 import IOContext, { IOCOntextValue } from './IOContext';
@@ -35,7 +33,6 @@ function withIO<
 
   const IOScrollableComponent = class extends PureComponent<ScrollableComponentProps> {
     protected node: any;
-    protected nativeRef: RefObject<View>;
 
     protected scroller: RefObject<any>;
 
@@ -49,12 +46,10 @@ function withIO<
       super(props);
 
       const self = this;
-      this.nativeRef = createRef();
       this.scroller = createRef();
-      this.node = null;
       this.root = {
         get node() {
-          return self.nativeRef.current;
+          return self.node;
         },
         get horizontal() {
           return !!self.props.horizontal;
@@ -81,7 +76,6 @@ function withIO<
           zoomScale: 1,
         },
       };
-
       const manager = new IOManager({
         root: this.root,
         get rootMargin() {
@@ -95,8 +89,8 @@ function withIO<
     }
 
     componentDidMount() {
-      this.node = findNodeHandle(this.nativeRef.current);
-
+      this.node =
+        this.scroller.current?.getNativeScrollRef?.() || this.scroller.current;
       methods.forEach((method) => {
         (this as any)[method] = (...args: any) => {
           this.scroller.current?.[method]?.(...args);
@@ -151,16 +145,14 @@ function withIO<
     render() {
       return (
         <IOContext.Provider value={this.contextValue}>
-          <View ref={this.nativeRef}>
-            <Comp
-              scrollEventThrottle={16}
-              {...this.props}
-              ref={this.scroller}
-              onContentSizeChange={this.handleContentSizeChange}
-              onLayout={this.handleLayout}
-              onScroll={this.handleScroll}
-            />
-          </View>
+          <Comp
+            scrollEventThrottle={16}
+            {...this.props}
+            ref={this.scroller}
+            onContentSizeChange={this.handleContentSizeChange}
+            onLayout={this.handleLayout}
+            onScroll={this.handleScroll}
+          />
         </IOContext.Provider>
       );
     }

@@ -40,6 +40,6 @@ declare class InView<T = ViewProps> extends PureComponent<InViewProps<T>> {
     setNativeProps: (...args: any) => void;
     focus: (...args: any) => void;
     blur: (...args: any) => void;
-    render(): JSX.Element | null;
+    render(): React.JSX.Element | null;
 }
 export default InView;
