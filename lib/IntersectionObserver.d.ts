@@ -25,6 +25,7 @@ export interface RootMargin {
 export interface IntersectionObserverOptions {
     root: Root;
     rootMargin?: RootMargin;
+    threshold?: number
 }
 export type IntersectionObserverCallback = (entries: IntersectionObserverEntry[]) => void;
 export declare const defaultRootMargin: RootMargin;
