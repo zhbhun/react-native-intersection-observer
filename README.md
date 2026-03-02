@@ -57,6 +57,16 @@ function Demo() {
 export default Demo;
 ```
 
+You can also use the `threshold` prop to control how much of the element must be visible before it is considered in view. A value of `0` (default) triggers as soon as any part of the element is visible, while `1` requires the element to be fully visible within the viewport.
+
+```tsx
+<IOScrollView threshold={0.5}>
+  <InView onChange={(inView: boolean) => console.log('Inview:', inView)}>
+    <Text>This triggers when at least 50% of the element is visible.</Text>
+  </InView>
+</IOScrollView>
+```
+
 Please note that the functionality of the InView component is dependent on the use of the withIO higher-order component to wrap your scrollable component. The react-native-intersection-observer library presently offers two frequently used scrollable components: IOScrollView and IOFlatList. It's imperative to utilize the InView component within one of these two components for it to work as intended. If neither IOScrollView nor IOFlatList suits your requirements, you have the flexibility to employ withIO to encapsulate your custom scrollable components.
 
 ```tsx
@@ -92,7 +102,8 @@ Furthermore, InView cannot be used within nested scrollable components. It solel
 
   | Name | Type | Default | Required | Description |
   | --- | --- | --- | --- | --- |
-  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | Expands or shrinks the viewport bounds used for intersection detection. |
+  | [threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/thresholds) | number | 0 | false | A value between 0 and 1 indicating what fraction of the element must be visible before it is considered in view. |
 
 - Methods: Inherits [ScrollView Methods](https://reactnative.dev/docs/scrollview#methods)
 
@@ -102,7 +113,8 @@ Furthermore, InView cannot be used within nested scrollable components. It solel
 
   | Name | Type | Default | Required | Description |
   | --- | --- | --- | --- | --- |
-  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | root margin |
+  | [rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin) | { top: number; left: number; right: number; bottom: number } | undefined | false | Expands or shrinks the viewport bounds used for intersection detection. |
+  | [threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/thresholds) | number | 0 | false | A value between 0 and 1 indicating what fraction of the element must be visible before it is considered in view. |
 
 - Methods: Inherits [FlatList Methods](https://reactnative.dev/docs/flatlist#methods)
 
