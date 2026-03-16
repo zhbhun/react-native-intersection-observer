@@ -46,6 +46,7 @@ export interface RootMargin {
 export interface IntersectionObserverOptions {
   root: Root;
   rootMargin?: RootMargin;
+  threshold?: number;
 }
 
 export type IntersectionObserverCallback = (
@@ -58,6 +59,8 @@ export const defaultRootMargin: RootMargin = {
   top: 0,
   bottom: 0,
 };
+
+export const defaultThreshold = 0;
 
 class IntersectionObserver {
   protected callback: IntersectionObserverCallback;
@@ -103,6 +106,10 @@ class IntersectionObserver {
   protected handleScroll = throttle(
     () => {
       const rootMargin = this.options?.rootMargin || defaultRootMargin;
+      const threshold = Math.min(
+        Math.max(this.options?.threshold ?? defaultThreshold, 0),
+        1
+      );
       const {
         horizontal,
         current: {
@@ -137,15 +144,19 @@ class IntersectionObserver {
         if (horizontal) {
           isIntersecting =
             contentOffsetWithLayout + (rootMargin.right || 0) >=
-              targetLayout.x &&
+              targetLayout.x + targetLayout.width * threshold &&
             contentOffset.x - (rootMargin.left || 0) <=
-              targetLayout.x + targetLayout.width;
+              targetLayout.x +
+                targetLayout.width -
+                targetLayout.width * threshold;
         } else {
           isIntersecting =
             contentOffsetWithLayout + (rootMargin.bottom || 0) >=
-              targetLayout.y &&
+              targetLayout.y + targetLayout.height * threshold &&
             contentOffset.y - (rootMargin.top || 0) <=
-              targetLayout.y + targetLayout.height;
+              targetLayout.y +
+                targetLayout.height -
+                targetLayout.height * threshold;
         }
         if (target.inView !== isIntersecting) {
           target.inView = isIntersecting;

@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { RootMargin } from './IntersectionObserver';
 export interface IOComponentProps {
     rootMargin?: RootMargin;
-    threshold?: number
+    threshold?: number;
 }
 declare function withIO<CompProps extends Pick<ComponentProps<typeof ScrollView>, 'horizontal' | 'scrollEventThrottle' | 'onContentSizeChange' | 'onLayout' | 'onScroll'>>(Comp: new (props: CompProps) => any, methods: string[]): new (props: CompProps) => any;
 export default withIO;

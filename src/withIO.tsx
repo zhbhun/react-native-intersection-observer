@@ -17,6 +17,7 @@ import IOManager from './IOManager';
 
 export interface IOComponentProps {
   rootMargin?: RootMargin;
+  threshold?: number;
 }
 
 function withIO<
@@ -80,6 +81,9 @@ function withIO<
         root: this.root,
         get rootMargin() {
           return self.props.rootMargin;
+        },
+        get threshold() {
+          return self.props.threshold;
         },
       });
       this.manager = manager;
